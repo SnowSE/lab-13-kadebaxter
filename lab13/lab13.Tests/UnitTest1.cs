@@ -34,9 +34,54 @@ public class UnitTest1
     [Fact]
     public void TestAddAttendee_NameNull()
     {
-         var o = new AttendanceManager();
-        o.Invoking((o)=> o.AddAttendee(null))
+        var o = new AttendanceManager();
+        o.Invoking((o) => o.AddAttendee(null))
          .Should()
          .Throw<ArgumentNullException>();
+    }
+
+    [Fact]
+    public void TestCheckInAttendee_RaisesAttendeeCheckedIn()
+    {
+        var o = new AttendanceManager();
+        Attendee person = new Attendee("Some Name");
+        var eventMonitor = o.Monitor();
+
+        o.CheckInAttendee(person);
+
+        eventMonitor.Should().Raise("AttendeeCheckedIn");
+    }
+
+    [Fact]
+    public void TestCheckInAttendee_SetsTimestamp()
+    {
+        Attendee person = new Attendee("Somebody");
+        var o = new AttendanceManager();
+
+        o.CheckInAttendee(person);
+
+        person.CheckedInAt.Should().BeAfter(DateTime.Now.Date);
+    }
+
+    [Fact]
+    public void TestCheckInAttendee_ArgumentNullException()
+    {
+        var o = new AttendanceManager();
+        o.Invoking((o) => o.CheckInAttendee(null))
+         .Should()
+         .Throw<ArgumentNullException>();
+    }
+
+    [Fact]
+    public void TestCheckInAttendee_AlreadyCheckedInException()
+    {
+        Attendee person = new Attendee("Somebody");
+        var o = new AttendanceManager();
+
+        o.CheckInAttendee(person);
+
+        o.Invoking((o) => o.CheckInAttendee(person))
+         .Should()
+         .Throw<AlreadyCheckedInException>();
     }
 }

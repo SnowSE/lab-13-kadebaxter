@@ -1,4 +1,6 @@
-﻿namespace lab13.Logic;
+﻿using System.Runtime.Serialization;
+
+namespace lab13.Logic;
 
 public class AttendanceManager
 {
@@ -9,26 +11,58 @@ public class AttendanceManager
     private List<Attendee> attendees = [];
     public event Action AttendeeAdded;
     public event Action AttendeeCheckedIn;
-
-    public void AddAttendee(string name)
+    public List<Attendee> GetAllAttendees()
     {
-        AttendeeAdded?.Invoke();
+        return attendees;
+    }
+
+    public void AddAttendee(string? name)
+    {
         if (name == null)
             throw new ArgumentNullException();
-            
+
+        AttendeeAdded?.Invoke();
         Attendee person = new Attendee(name);
         attendees.Add(person);
     }
 
-    public List<Attendee> GetAllAttendees()
+    public void CheckInAttendee(Attendee? attendee)
     {
-        return attendees;
+        if (attendee == null)
+            throw new ArgumentNullException();
+
+        if (attendee.CheckedInAt != null)
+            throw new AlreadyCheckedInException();
+            
+        AttendeeCheckedIn?.Invoke();
+        attendee.CheckedInAt = DateTime.UtcNow;
+    }
+}
+
+[Serializable]
+public class AlreadyCheckedInException : Exception
+{
+    public AlreadyCheckedInException()
+    {
+    }
+
+    public AlreadyCheckedInException(string? message) : base(message)
+    {
+    }
+
+    public AlreadyCheckedInException(string? message, Exception? innerException) : base(message, innerException)
+    {
+    }
+
+    protected AlreadyCheckedInException(SerializationInfo info, StreamingContext context) : base(info, context)
+    {
     }
 }
 
 public class Attendee
 {
-    public string Name { get; set; }
+    public string? Name { get; set; }
+    public DateTime? CheckedInAt{ get; set; }
     public Attendee(string name)
     {
         Name = name;
