@@ -84,4 +84,13 @@ public class UnitTest1
          .Should()
          .Throw<AlreadyCheckedInException>();
     }
+
+    [Fact]
+    public void TestGetAllAttendees_GetsList()
+    {
+        var o = new AttendanceManager();
+        o.AddAttendee("Somebody");
+        var list = o.GetAllAttendees();
+        list.Should().HaveCount(1);
+    }
 }
