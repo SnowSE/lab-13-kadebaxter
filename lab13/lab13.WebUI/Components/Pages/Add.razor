@@ -1,0 +1,18 @@
+@page "/add"
+
+<PageTitle>Add</PageTitle>
+
+<h1>Hello, world!</h1>
+<input @bind=name>
+<button @onclick=add>Add Attendee</button>
+
+
+@code {
+    string? name;
+    AttendanceManager? o = AttendanceManager.Instance;
+
+    public void add()
+    {
+        o?.AddAttendee(name);
+    }
+}

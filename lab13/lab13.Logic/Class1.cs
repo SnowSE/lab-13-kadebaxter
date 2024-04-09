@@ -9,8 +9,9 @@ public class AttendanceManager
     }
 
     private List<Attendee> attendees = [];
-    public event Action AttendeeAdded;
-    public event Action AttendeeCheckedIn;
+    public event Action? AttendeeAdded;
+    public event Action? AttendeeCheckedIn;
+    public static AttendanceManager? Instance { get; }
     public List<Attendee> GetAllAttendees()
     {
         return attendees;
