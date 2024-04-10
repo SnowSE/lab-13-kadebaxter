@@ -2,5 +2,28 @@
 
 <PageTitle>Checkin</PageTitle>
 
-<h1>Checkin</h1>
+<table class="table table-striped">
+  <thead>
+      <tr>
+          <th>Name</th>
+          <th>Check In</th>
+      </tr>
+  </thead>
+  <tbody>
+      @foreach (var attendee in AttendanceManager.Instance.GetAllAttendees().Where(a => a.CheckedInAt is null))
+      {
+          <tr>
+              <td>@attendee.Name</td>
+              <td>
+                  <button @onclick="(()=>AttendanceManager.Instance.CheckInAttendee(attendee))">Check @attendee.Name In</button>
+              </td>
+          </tr>
+      }
+  </tbody>
+</table>
+
+
+@code
+{
+}
 
