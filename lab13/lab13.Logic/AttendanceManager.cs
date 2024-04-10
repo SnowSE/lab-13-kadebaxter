@@ -8,10 +8,10 @@ public class AttendanceManager
     {
     }
 
-    private List<Attendee> attendees = [];
+    private List<Attendee> attendees = new();
     public event Action? AttendeeAdded;
     public event Action? AttendeeCheckedIn;
-    public static AttendanceManager? Instance { get; }
+    public static AttendanceManager Instance = new();
     public List<Attendee> GetAllAttendees()
     {
         return attendees;
@@ -19,7 +19,7 @@ public class AttendanceManager
 
     public void AddAttendee(string? name)
     {
-        if (name == null)
+        if (name == null || name == "")
             throw new ArgumentNullException();
 
         AttendeeAdded?.Invoke();

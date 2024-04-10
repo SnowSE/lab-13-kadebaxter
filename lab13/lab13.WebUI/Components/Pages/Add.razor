@@ -3,16 +3,15 @@
 <PageTitle>Add</PageTitle>
 
 <h1>Hello, world!</h1>
-<input @bind=name>
-<button @onclick=add>Add Attendee</button>
-
+<form @onsubmit=add>
+    <input @bind=name />
+    <input type="submit" value=Add />
+</form>
 
 @code {
     string? name;
-    AttendanceManager? o = AttendanceManager.Instance;
-
     public void add()
     {
-        o?.AddAttendee(name);
+        AttendanceManager.Instance.AddAttendee(name);
     }
 }
